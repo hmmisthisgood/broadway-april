@@ -47,3 +47,11 @@ git remote add origin https://github.com/hmmisthisgood/broadway-april.git
 ``` bash 
 git push origin master 
 ```
+
+
+# How to download this code in your machine 
+
+``` 
+git clone https://github.com/hmmisthisgood/broadway-april.git
+
+```
