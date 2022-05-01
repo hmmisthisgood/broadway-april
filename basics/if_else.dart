@@ -33,4 +33,15 @@ main() {
     // if (!true) , if (!false)
     print("Not holiday");
   }
+
+  switch (day) {
+    case "sunday":
+      print("Hello sunday");
+      break;
+    case "monday":
+      print("not hello monday");
+      break;
+    default:
+      print("This is defaul");
+  }
 }

@@ -37,4 +37,7 @@ main() {
     "salary": [1, 4, 4, 5],
     1: 2
   };
+
+  Set<int> noDuplicate = {1, 2, 21, 1, 1, 1, 4, 5};
+  print(noDuplicate);
 }
