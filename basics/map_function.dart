@@ -5,12 +5,16 @@ main() {
 
   countries.forEach((element) {});
 
-  var newC = countries.map((country) {
-    var temp = "This is $country";
-    return temp;
-  }).toList();
+  var newC = countries.map(
+    (country) {
+      var temp = "This is $country";
+      return temp;
+    },
+  ).toList();
 
   print(newC);
 
   // users.map((key, value) {});
 }
+
+bool compareValues(int a, int b) => a < b;
