@@ -1,6 +1,7 @@
 import 'package:first_app/row_columns.dart';
 import 'package:flutter/material.dart';
 import 'home.dart';
+import 'package:first_app/image_screen.dart';
 
 void main() {
   runApp(OurApp());
@@ -18,10 +19,9 @@ class OurApp extends StatelessWidget {
   Widget build(BuildContext context) {
     // final whiteRgb = Color.fromRGBO(r, g, b, opacity);
 
-    return MaterialApp(
-      title: "Our app",
-      home: RowAndColumns(),
-    );
+    return MaterialApp(title: "Our app", home: ImageScreen()
+        //  RowAndColumns(),
+        );
   }
 }
 
@@ -37,6 +37,7 @@ class OurApp extends StatelessWidget {
 /// Scroll: 
 /// 1. ListView 
 /// 2. GridView 
+/// 3. SingleChildScrollView
 
 /// UI: 
 /// 1. Text 
