@@ -1,0 +1,50 @@
+import 'package:flutter/cupertino.dart';
+
+import 'package:flutter/material.dart';
+
+class ListWithBuilderScreen extends StatelessWidget {
+  final List<String> countries = [
+    "Nepal",
+    "china",
+    "US",
+    "UK",
+    "Australia",
+    "Austria",
+    "France",
+    "Brazil",
+    "India",
+    "Canada",
+    "Finland",
+    "Bhutan",
+    "Germany",
+    "Afghanistan",
+    "Mongolia",
+    "Italy"
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text("List with builder")),
+      body: ListView.builder(
+        itemCount: countries.length,
+        // separatorBuilder: (context, index) {
+        //   return Divider(
+        //     color: Colors.black,
+        //   );
+        // },
+        itemBuilder: (context, index) {
+          final currentCountry = countries[index];
+
+          return Container(
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+            margin: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+            decoration: BoxDecoration(
+                border: Border.all(), borderRadius: BorderRadius.circular(10)),
+            child: Text("${index + 1}. $currentCountry"),
+          );
+        },
+      ),
+    );
+  }
+}
