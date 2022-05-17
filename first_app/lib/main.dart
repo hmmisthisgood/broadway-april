@@ -1,3 +1,4 @@
+import 'package:first_app/grid_view_screen.dart';
 import 'package:first_app/row_columns.dart';
 import 'package:flutter/material.dart';
 import 'home.dart';
@@ -22,7 +23,7 @@ class OurApp extends StatelessWidget {
   Widget build(BuildContext context) {
     // final whiteRgb = Color.fromRGBO(r, g, b, opacity);
 
-    return MaterialApp(title: "Our app", home: ListWithBuilderScreen()
+    return MaterialApp(title: "Our app", home: GridViewScreen()
         //  RowAndColumns(),
         );
   }

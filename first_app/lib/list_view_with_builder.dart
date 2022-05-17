@@ -40,7 +40,9 @@ class ListWithBuilderScreen extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
             margin: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
             decoration: BoxDecoration(
-                border: Border.all(), borderRadius: BorderRadius.circular(10)),
+              border: Border.all(),
+              borderRadius: BorderRadius.circular(10),
+            ),
             child: Text("${index + 1}. $currentCountry"),
           );
         },
