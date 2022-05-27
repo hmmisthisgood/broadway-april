@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' as api;
+import 'package:http_basics/model/post.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({Key? key}) : super(key: key);
@@ -15,6 +16,12 @@ class _HomepageState extends State<Homepage> {
   String dataFromServer = "";
 
   List dataList = [];
+  List<Post> postsList = [];
+  bool isLoading = false;
+  bool hasError = false;
+  String error = "";
+
+  String currentState = "pending"; // "success", "error"
 
   @override
   void initState() {
@@ -33,18 +40,45 @@ class _HomepageState extends State<Homepage> {
     // int.parse("20") // 20
     // double.parse("abc")// 20.0
     // DateTime.parse(formattedString)
+    isLoading = true;
+    setState(() {});
 
     api.get(url).then((response) {
       print("Status code: ${response.statusCode}");
       print(response.body);
       dataFromServer = response.body;
 
-      final decoded = json.decode(response.body);
-      dataList = decoded;
+      final List decoded = json.decode(response.body); // List
+
+      postsList = decoded.map((item) {
+        var item1 = item as Map;
+        // final convertedPost = Post.convertToDart(item);
+        return Post.convertToDart(item);
+      }).toList();
+
+      // dataList = decoded;
+      currentState = "success";
+      isLoading = false;
       setState(() {});
-    }).catchError((e) {
+    }).catchError((e, s) {
       print(e);
+      print(s);
+      isLoading = false;
+      hasError = true;
+      currentState = "error";
+      error = e.toString();
+      setState(() {});
     });
+  }
+
+  postDataToServer() {
+    final endpoint = "https://jsonplaceholder.typicode.com/posts";
+
+    final uri = Uri.parse(endpoint);
+
+    api.post(uri,
+        body: {"email": "email", "password": "password"},
+        headers: {"Content-type": "application/json"});
   }
 
   @override
@@ -52,12 +86,8 @@ class _HomepageState extends State<Homepage> {
     super.dispose();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    print("build called");
-
-    return Scaffold(
-        body: ListView.builder(
+  buildDataListViewWithMap() {
+    return ListView.builder(
       itemCount: dataList.length,
       itemBuilder: (context, index) {
         final currentItem = dataList[index] as Map;
@@ -90,6 +120,72 @@ class _HomepageState extends State<Homepage> {
           ),
         );
       },
-    ));
+    );
+  }
+
+  buildPostsListViewWithPost() {
+    return ListView.builder(
+      itemCount: postsList.length,
+      itemBuilder: (context, index) {
+        final Post currentItem = postsList[index];
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
+          child: Container(
+            decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(color: Colors.red.withOpacity(0.3)),
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.red.withOpacity(0.3),
+                      spreadRadius: 4,
+                      blurRadius: 5,
+                      offset: Offset(3, 3))
+                ]),
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "${index + 1}. " + currentItem.title,
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 10),
+                Text(currentItem.body, style: TextStyle(fontSize: 14)),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget buildBody() {
+    if (isLoading) {
+      return Center(child: CircularProgressIndicator());
+    }
+    if (hasError) {
+      return Center(child: Text(error));
+    }
+
+    return buildPostsListViewWithPost();
+  }
+
+  Widget buildBodyInDifferentWay() {
+    if (currentState == "pending") {
+      return Center(child: CircularProgressIndicator());
+    }
+    if (currentState == "error") {
+      return Center(child: Text(error));
+    }
+
+    return buildDataListViewWithMap();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    print("build called");
+
+    return Scaffold(body: buildBody());
   }
 }
