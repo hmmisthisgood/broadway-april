@@ -54,7 +54,7 @@ class User {
       address: "",
       company:
           json['company'] == null ? null : Company.convert(json['company']),
-      companyName: json['company']['name'],
+      companyName: json['company']?['name'],
     );
   }
 }
