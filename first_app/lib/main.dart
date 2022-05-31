@@ -1,15 +1,17 @@
 import 'package:first_app/grid_view_screen.dart';
+
 import 'package:first_app/page_view_screen.dart';
 import 'package:first_app/row_columns.dart';
 import 'package:first_app/stack_screen.dart';
 import 'package:first_app/tab_screen.dart';
-import 'package:first_app/textfield_screen.dart';
+import 'package:first_app/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'home.dart';
 import 'package:first_app/image_screen.dart';
 
 import 'list_view_with_builder.dart';
 import 'list_views.dart';
+import 'navigation/route_generator.dart';
 
 void main() {
   runApp(OurApp());
@@ -28,8 +30,11 @@ class OurApp extends StatelessWidget {
     // final whiteRgb = Color.fromRGBO(r, g, b, opacity);
 
     return MaterialApp(
-      title: "Our app", home: TextFieldScreen(),
+      title: "Our app",
       theme: ThemeData(primarySwatch: Colors.purple),
+      // home: TextFieldScreen(),
+      initialRoute: "/",
+      onGenerateRoute: ourRouteGenerator,
       //  RowAndColumns(),
     );
   }

@@ -21,7 +21,10 @@ class _StackScreenState extends State<StackScreen>
       case 0:
         return buildStack();
       case 1:
-        return ListWithBuilderScreen();
+        return ListWithBuilderScreen(
+          username: "",
+          phoneNumber: '',
+        );
       case 2:
         return ImageScreen();
       default:
@@ -69,7 +72,14 @@ class _StackScreenState extends State<StackScreen>
     return PageView(
       controller: pageController,
       physics: NeverScrollableScrollPhysics(),
-      children: [buildStack(), ListWithBuilderScreen(), ImageScreen()],
+      children: [
+        buildStack(),
+        ListWithBuilderScreen(
+          username: "",
+          phoneNumber: "",
+        ),
+        ImageScreen()
+      ],
     );
   }
 

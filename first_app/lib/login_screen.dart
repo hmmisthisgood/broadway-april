@@ -1,4 +1,18 @@
+import 'package:first_app/image_screen.dart';
+import 'package:first_app/model/user.dart';
+import 'package:first_app/utils/shared_pref.dart';
+import 'package:first_app/widget/text_field.dart';
 import 'package:flutter/material.dart';
+
+import 'list_view_with_builder.dart';
+import 'navigation/routes.dart';
+
+class NavProps {
+  final String phone;
+  final String email;
+
+  NavProps({required this.phone, required this.email});
+}
 
 class TextFieldScreen extends StatefulWidget {
   const TextFieldScreen({Key? key}) : super(key: key);
@@ -20,6 +34,56 @@ class _TextFieldScreenState extends State<TextFieldScreen> {
   final formKey = GlobalKey<FormState>();
   FocusNode emailFocus = FocusNode();
   FocusNode phoneNoFocus = FocusNode();
+
+  onLogin() {
+    // var email = emailController.text;
+    // var password = passwordController.text;
+    // emailController.clear();
+    // emailController.text = "some text";
+
+    FocusScope.of(context).unfocus();
+
+    if (formKey.currentState != null) {
+      formKey.currentState!.save();
+
+      final isValid = formKey.currentState!.validate();
+
+      if (!isValid) {
+        return;
+      }
+
+      /// non named navigation
+      // Navigator.pushAndRemoveUntil(
+      //   context,
+      //   MaterialPageRoute(
+      //       builder: (_) => ListWithBuilderScreen(
+      //             username: emailController.text,
+      //           )),
+      //   (route) {
+      //     return false;
+      //   },
+      // );
+
+      /// named naviagation
+
+      // Navigator.pushNamedAndRemoveUntil(
+      //     context, "/dashboard", (route) => false);
+
+      SharedPref.setIsUserLoggedIn(true);
+      SharedPref.saveuser(User(
+          email: "test@test.com",
+          profilePicture:
+              "https://cdn.psychologytoday.com/sites/default/files/styles/article-inline-half-caption/public/field_blog_entry_images/2018-09/shutterstock_648907024.jpg?itok=0hb44OrI",
+          username: "iamrock",
+          id: 12312));
+      // SharedPref().getIsUserLoggedIn();
+
+      Navigator.pushNamed(context, Routes.dashboardScreen,
+          arguments: NavProps(
+              phone: phoneContoller.text, email: emailController.text));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,40 +103,17 @@ class _TextFieldScreenState extends State<TextFieldScreen> {
                     /// used for emulating content on the bottom
                     // SizedBox(height: 350),
                     // Text("Email"),
-                    TextFormField(
-                      autofocus: true,
+                    CommonTextField(
                       focusNode: emailFocus,
                       controller: emailController,
                       keyboardType: TextInputType.emailAddress,
-                      maxLines: 1,
                       textInputAction: TextInputAction.next,
-                      onFieldSubmitted: (val) {
-                        phoneNoFocus.requestFocus();
-                      },
-                      onChanged: (val) {
-                        print(val);
-                        email = val;
-                      },
-                      // onSubmitted: (val) {
-                      //   print("submitted this: $val");
-                      // },
-                      decoration: InputDecoration(
-                        hintText: "Enter your email",
-                        // label: Text("Email"),
-                        // labelText: "Email",
-                        hintStyle: TextStyle(color: Colors.grey),
-                        prefixIcon: Icon(Icons.email),
-                        filled: true,
-                        fillColor: Colors.white,
-                        border: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(width: 0.5, color: Colors.green),
-                            borderRadius: BorderRadius.circular(14)),
-                      ),
+                      hintText: "Enter your email",
+                      prefixIcon: Icon(Icons.email),
                     ),
+
                     SizedBox(height: 15),
-                    TextFormField(
-                      autovalidateMode: AutovalidateMode.disabled,
+                    CommonTextField(
                       controller: passwordController,
                       obscureText: hidePassword,
                       validator: (val) {
@@ -84,44 +125,23 @@ class _TextFieldScreenState extends State<TextFieldScreen> {
                           return "Password must be 8 characters long";
                         }
                       },
-                      decoration: InputDecoration(
-                          // border: UnderlineInputBorder(
-                          //   borderSide: BorderSide(color: Colors.black),
-                          // ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.black),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(width: 1, color: Colors.green),
-                              borderRadius: BorderRadius.circular(14)),
-                          errorBorder: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(width: 1, color: Colors.red),
-                              borderRadius: BorderRadius.circular(14)),
-                          suffixIcon: InkWell(
-                            onTap: () {
-                              hidePassword = !hidePassword;
-                              setState(() {});
-                            },
-                            child: Icon(hidePassword == true
-                                ? Icons.visibility
-                                : Icons.visibility_off),
-                          ),
-                          prefixIcon: Icon(Icons.lock)),
+                      prefixIcon: Icon(Icons.lock),
+                      suffixIcon: InkWell(
+                          onTap: () {
+                            hidePassword = !hidePassword;
+                            setState(() {});
+                          },
+                          child: Icon(hidePassword == true
+                              ? Icons.visibility
+                              : Icons.visibility_off)),
                     ),
+
                     SizedBox(height: 15),
 
-                    TextFormField(
+                    CommonTextField(
                       controller: phoneContoller,
                       focusNode: phoneNoFocus,
                       keyboardType: TextInputType.number,
-                      maxLines: 1,
-                      maxLength: 10,
-                      textInputAction: TextInputAction.next,
-                      onChanged: (val) {
-                        print(val);
-                      },
                       validator: (val) {
                         if (val == null) {
                           return "Phone number must be valid";
@@ -131,10 +151,7 @@ class _TextFieldScreenState extends State<TextFieldScreen> {
                           return "phone number must be 10 charcters long";
                         }
                       },
-                      decoration: InputDecoration(
-                          hintText: "Enter your phone number",
-                          hintStyle: TextStyle(color: Colors.grey),
-                          prefixIcon: Icon(Icons.phone)),
+                      hintText: "Enter your phone number",
                     ),
                     SizedBox(height: 20),
                     // GestureDetector(
@@ -157,26 +174,7 @@ class _TextFieldScreenState extends State<TextFieldScreen> {
                     // )
 
                     MaterialButton(
-                      onPressed: () {
-                        // var email = emailController.text;
-                        // var password = passwordController.text;
-                        // emailController.clear();
-
-                        // emailController.text = "some text";
-
-                        FocusScope.of(context).unfocus();
-
-                        if (formKey.currentState != null) {
-                          formKey.currentState!.save();
-                          final isValid = formKey.currentState!.validate();
-
-                          if (!isValid) {
-                            return;
-                          }
-
-                          /// request server
-                        }
-                      },
+                      onPressed: onLogin,
                       color: Colors.purple,
                       minWidth: 200,
                       height: 48,
