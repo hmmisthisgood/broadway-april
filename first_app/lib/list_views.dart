@@ -1,3 +1,4 @@
+import 'package:first_app/utils/assets.dart';
 import 'package:flutter/material.dart';
 
 class ListScreen extends StatelessWidget {
@@ -18,14 +19,14 @@ class ListScreen extends StatelessWidget {
             size: 40,
             color: Colors.red,
           ),
-          Image.asset("assets/images/wall.jpg"),
-          Image.asset("assets/images/wall.jpg"),
-          Image.asset("assets/images/wall.jpg"),
-          Image.asset("assets/images/wall.jpg"),
-          Image.asset("assets/images/wall.jpg"),
-          Image.asset("assets/images/wall.jpg"),
-          Image.asset("assets/images/wall.jpg"),
-          Image.asset("assets/images/wall.jpg"),
+          Image.asset(Assets.wall),
+          Image.asset(Assets.wall),
+          Image.asset(Assets.wall),
+          Image.asset(Assets.wall),
+          Image.asset(Assets.wall),
+          Image.asset(Assets.wall),
+          Image.asset(Assets.wall),
+          Image.asset(Assets.wall),
         ],
       ),
     );
