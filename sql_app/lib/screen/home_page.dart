@@ -14,7 +14,7 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
   late Database _db;
-  List users = [];
+  List<Map> users = [];
   @override
   void initState() {
     super.initState();
@@ -64,6 +64,8 @@ class _HomepageState extends State<Homepage> {
   getUsers() async {
     try {
       final res = await _db.query("users");
+
+      /// _db.rawQuery("SELECT * FROM users WHERE id=1");
       Log.e(res);
       users = res;
       setState(() {});
@@ -72,9 +74,73 @@ class _HomepageState extends State<Homepage> {
     }
   }
 
+  deleteUser(int userId) async {
+    try {
+      await _db.delete("users", where: "id=?", whereArgs: [userId]);
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  updateUser(newUser) async {
+    try {
+      await _db
+          .update("users", newUser, where: 'id=?', whereArgs: [newUser["id"]]);
+    } catch (e, s) {
+      print(e);
+      print(s);
+    }
+  }
+
   /// CRUD
   //  C:\Users\Desktop\
   /// /home/user/Desktop
+
+  showEditDialog(BuildContext context, Map user) {
+    final nameController = TextEditingController(text: user['username']);
+    final ageController = TextEditingController(text: user['age'].toString());
+    final bioController = TextEditingController(text: user['bio']);
+
+    showDialog(
+        context: context,
+        // barrierDismissible: false,
+        barrierColor: Colors.red.withOpacity(0.2),
+        builder: (context) {
+          return Dialog(
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextField(
+                    controller: nameController,
+                  ),
+                  TextField(
+                    controller: ageController,
+                  ),
+                  TextField(
+                    controller: bioController,
+                  ),
+                  MaterialButton(
+                    onPressed: () async {
+                      await updateUser({
+                        "id": user["id"],
+                        "username": nameController.text,
+                        "age": int.parse(ageController.text),
+                        "bio": bioController.text
+                      });
+                      getUsers();
+                      Navigator.pop(context);
+                    },
+                    color: Colors.blue,
+                    child: Text("Submit"),
+                  )
+                ],
+              ),
+            ),
+          );
+        });
+  }
 
   /// /data/223d3wdwdw/com.
   @override
@@ -114,7 +180,7 @@ class _HomepageState extends State<Homepage> {
                       Row(
                         children: [
                           Text(
-                            "${index + 1}  ${_user["username"]}",
+                            "${_user["id"]}  ${_user["username"]}",
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                           Spacer(),
@@ -123,7 +189,9 @@ class _HomepageState extends State<Homepage> {
                               Icons.edit,
                               color: Colors.green,
                             ),
-                            onTap: () {},
+                            onTap: () {
+                              showEditDialog(context, _user);
+                            },
                           ),
                           SizedBox(width: 10),
                           InkWell(
@@ -131,7 +199,10 @@ class _HomepageState extends State<Homepage> {
                               Icons.delete,
                               color: Colors.red,
                             ),
-                            onTap: () {},
+                            onTap: () {
+                              deleteUser(_user["id"]);
+                              getUsers();
+                            },
                           ),
                         ],
                       ),
