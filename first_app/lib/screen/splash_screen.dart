@@ -25,6 +25,7 @@ class _SplashScreenState extends State<SplashScreen> {
   checkUserLoggedInStatus() async {
     final isLoggedIn = await SharedPref.getIsUserLoggedIn();
     final user = await SharedPref.getUser();
+
     Future.delayed(Duration(seconds: 2), () {
       if (isLoggedIn == false) {
         Navigator.pushNamed(context, Routes.loginScreen);
@@ -34,7 +35,7 @@ class _SplashScreenState extends State<SplashScreen> {
       var _phone = "";
       var _email = "";
       if (user != null) {
-        _email = user.email;
+        _email = user.username;
         _phone = user.profilePicture;
       }
 

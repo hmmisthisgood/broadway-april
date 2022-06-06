@@ -37,7 +37,7 @@ class SharedPref {
     if (_value == null) {
       return null;
     }
-
+    print(_value);
     final decoded = json.decode(_value);
     User _user = User.convertFromJson(decoded);
     return _user;
