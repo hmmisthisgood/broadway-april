@@ -12,6 +12,7 @@ class StreamScreen extends StatefulWidget {
 class _StreamScreenState extends State<StreamScreen> {
   StreamController<int> streamController = StreamController.broadcast();
   int value = 0;
+  Timer? customTimer;
 
   @override
   void initState() {
@@ -20,14 +21,26 @@ class _StreamScreenState extends State<StreamScreen> {
   }
 
   addDataInStream() {
-    Timer.periodic(Duration(seconds: 1), (timer) {
+    customTimer = Timer.periodic(Duration(seconds: 1), (timer) {
       value = value + 2;
-      streamController.add(value);
+      // streamController.hashCode
+
+      if (streamController.isClosed == false) {
+        streamController.add(value);
+      }
       if (value == 10) {
-        streamController.close();
-        timer.cancel();
+        // streamController.close();
+        // timer.cancel();
       }
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    customTimer?.cancel();
+
+    streamController.close();
   }
 
   @override
