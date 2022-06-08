@@ -8,8 +8,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import '../bloc/video_cubit.dart';
 
 class Homepage extends StatefulWidget {
-  Homepage({Key? key}) : super(key: key);
-
+  Homepage({Key? key, this.envMode}) : super(key: key);
+  final envMode;
   @override
   State<Homepage> createState() => _HomepageState();
 }
@@ -86,7 +86,9 @@ class _HomepageState extends State<Homepage> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (_) => StreamScreen()));
+                                    builder: (_) => StreamScreen(
+                                          envMode: widget.envMode,
+                                        )));
                           },
                           child: Container(
                             child: FadeInImage(

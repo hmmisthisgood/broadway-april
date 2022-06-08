@@ -2,9 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-class StreamScreen extends StatefulWidget {
-  const StreamScreen({Key? key}) : super(key: key);
+import '../widget/inherited_widget.dart';
 
+class StreamScreen extends StatefulWidget {
+  const StreamScreen({Key? key, this.envMode}) : super(key: key);
+  final String? envMode;
   @override
   State<StreamScreen> createState() => _StreamScreenState();
 }
@@ -45,6 +47,10 @@ class _StreamScreenState extends State<StreamScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final appEnv = AppEnv.of(context);
+    final theme = Theme.of(context);
+
+    print(appEnv.envMode);
     return Scaffold(
       body: Center(
         child: StreamBuilder<int>(
