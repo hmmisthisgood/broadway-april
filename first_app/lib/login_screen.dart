@@ -1,11 +1,13 @@
 import 'package:first_app/image_screen.dart';
 import 'package:first_app/model/user.dart';
+import 'package:first_app/utils/locale_keys.dart';
 import 'package:first_app/utils/shared_pref.dart';
 import 'package:first_app/widget/text_field.dart';
 import 'package:flutter/material.dart';
 
 import 'list_view_with_builder.dart';
 import 'navigation/routes.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class NavProps {
   final String phone;
@@ -40,6 +42,8 @@ class _TextFieldScreenState extends State<TextFieldScreen> {
     // var password = passwordController.text;
     // emailController.clear();
     // emailController.text = "some text";
+
+    EasyLocalization.of(context)!.setLocale(Locale("ne"));
 
     FocusScope.of(context).unfocus();
 
@@ -86,6 +90,10 @@ class _TextFieldScreenState extends State<TextFieldScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final txt = theme.textTheme;
+    final h6 = txt.headline6;
+
     return Scaffold(
       appBar: AppBar(),
       body: SafeArea(
@@ -108,7 +116,7 @@ class _TextFieldScreenState extends State<TextFieldScreen> {
                       controller: emailController,
                       keyboardType: TextInputType.emailAddress,
                       textInputAction: TextInputAction.next,
-                      hintText: "Enter your email",
+                      hintText: LocaleKeys.emailHint.tr(),
                       prefixIcon: Icon(Icons.email),
                     ),
 
@@ -181,7 +189,7 @@ class _TextFieldScreenState extends State<TextFieldScreen> {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10)),
                       child: Text(
-                        "Login",
+                        "normal_key".tr(),
                         style: TextStyle(color: Colors.white, fontSize: 18),
                       ),
                     )

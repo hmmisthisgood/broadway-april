@@ -1,0 +1,18 @@
+{
+  "normal_key": "हो",
+  "common": {
+    "yes": "हो",
+    "no": "छैन",
+    "submit": "पेश गर्नुहोस्"
+  },
+  "loginPage": {
+    "login": "लग - इन",
+    "emailHint": "आफ्नो ईमेल लेख्नुहोस ",
+    "passwordHint": "आफ्नो पास्वर्ड लेख्नुहोस ",
+    "phoneNoHint": "आफ्नो फोन नम्बर लेख्नुहोस "
+  },
+  "error": {
+    "passwordMustBeValid": "पासवर्ड मान्य हुनुपर्छ",
+    "passwordLengthValidp": "पासवर्ड ८  वर्ण लामो हुनुपर्छ"
+  }
+}

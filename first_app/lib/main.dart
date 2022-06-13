@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:first_app/grid_view_screen.dart';
 
 import 'package:first_app/page_view_screen.dart';
@@ -13,7 +14,10 @@ import 'list_view_with_builder.dart';
 import 'list_views.dart';
 import 'navigation/route_generator.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
+
   runApp(OurApp());
 }
 
@@ -28,14 +32,27 @@ class OurApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // final whiteRgb = Color.fromRGBO(r, g, b, opacity);
-
-    return MaterialApp(
-      title: "Our app",
-      theme: ThemeData(primarySwatch: Colors.purple),
-      // home: TextFieldScreen(),
-      initialRoute: "/",
-      onGenerateRoute: ourRouteGenerator,
-      //  RowAndColumns(),
+    return EasyLocalization(
+      supportedLocales: [
+        Locale("ne"),
+        Locale("en", "US"),
+      ],
+      startLocale: Locale("ne"),
+      path: "assets/translations",
+      fallbackLocale: Locale("en", "US"),
+      child: MaterialApp(
+        title: "Our app",
+        theme: ThemeData(
+          primarySwatch: Colors.purple,
+          textTheme: TextTheme(headline6: TextStyle(color: Colors.black)),
+        ),
+        // home: TextFieldScreen(),
+        initialRoute: "/login",
+        onGenerateRoute: ourRouteGenerator,
+        // localizationsDelegates: context.localizationDelegates,
+        locale: context.locale,
+        supportedLocales: context.supportedLocales,
+      ),
     );
   }
 }

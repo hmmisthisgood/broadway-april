@@ -1,0 +1,18 @@
+{
+  "normal_key": "yes",
+  "common": {
+    "yes": "Yes",
+    "no": "No",
+    "submit": "Submit"
+  },
+  "loginPage": {
+    "login": "Login",
+    "emailHint": "Enter your email",
+    "passwordHint": "Enter  your password",
+    "phoneNoHint": "Enter your phone number"
+  },
+  "error": {
+    "passwordMustBeValid": "Password must be valid",
+    "passwordLengthValidp": "Password must be 8 characters long"
+  }
+}
