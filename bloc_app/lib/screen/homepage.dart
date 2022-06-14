@@ -1,9 +1,11 @@
 import 'package:bloc_app/bloc/video_states.dart';
 import 'package:bloc_app/screen/stream_screen.dart';
 import 'package:bloc_app/utils/assets.dart';
+import 'package:bloc_app/widget/photos_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
 
 import '../bloc/video_cubit.dart';
 
@@ -65,68 +67,45 @@ class _HomepageState extends State<Homepage> {
           },
           builder: (context, state) {
             print(state);
-            if (state is VideoLoading || state is VideoInitState) {
-              return Center(child: CircularProgressIndicator());
+            if (state is VideoInitState) {
+              return CircularProgressIndicator();
+            }
+            if (state is VideoLoading) {
+              return Center(
+                  child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircularProgressIndicator(),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(state.loadingMessage ?? "loading....")
+                ],
+              ));
             }
             if (state is VideoFetchError) {
               return Text(state.errorMessage);
             }
-            if (state is VideoFetchSuccess) {
-              return ListView.builder(
-                  itemCount: state.data.length,
-                  itemBuilder: (context, index) {
-                    final image = state.data[index];
-
-                    return Stack(
-                      children: [
-                        InkWell(
-                          onTap: () {
-                            // Navigator.c(context).push(route);
-
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (_) => StreamScreen(
-                                          envMode: widget.envMode,
-                                        )));
-                          },
-                          child: Container(
-                            child: FadeInImage(
-                              placeholder: AssetImage(Assets.placeholder),
-                              image: NetworkImage(image['largeImageURL']),
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          bottom: 20,
-                          right: 20,
-                          child: InkWell(
-                            onTap: () {
-                              userName = image["user"];
-                              user.value = image["user"];
-                              // setState(() {});
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                      color: Colors.white, width: 2)),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(30),
-                                child: Image.network(
-                                  image['userImageURL'],
-                                  height: 50,
-                                  width: 50,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                          ),
-                        )
-                      ],
-                    );
-                  });
+            if (state is VideoFetchSuccess || state is LoadMoreVideosState) {
+              return Column(
+                children: [
+                  Expanded(
+                      child: PhontosListView(data: state.data, user: user)),
+                  if (state is LoadMoreVideosState) CircularProgressIndicator()
+                ],
+              );
             }
+
+            // if (state is LoadMoreVideosState) {
+            //   return Column(
+            //     children: [
+            //       Expanded(
+            //           child: PhontosListView(data: state.data, user: user)),
+            //       CircularProgressIndicator()
+            //     ],
+            //   );
+
+            // }
             return Text("unknown state");
           },
         ));

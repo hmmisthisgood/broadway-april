@@ -1,8 +1,14 @@
 import 'package:equatable/equatable.dart';
 
-abstract class VideoState extends Equatable {}
+abstract class VideoState extends Equatable {
+  final List data;
+
+  VideoState({required this.data});
+}
 
 class VideoInitState extends VideoState {
+  VideoInitState() : super(data: []);
+
   @override
   List<Object?> get props => [];
 }
@@ -10,36 +16,43 @@ class VideoInitState extends VideoState {
 // loading
 class VideoLoading extends VideoState {
   final String? loadingMessage;
-  VideoLoading({this.loadingMessage});
+  VideoLoading({this.loadingMessage}) : super(data: []);
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [loadingMessage];
 }
 
 // data fetch succeess
 
 class VideoFetchSuccess extends VideoState {
   final List data;
-  VideoFetchSuccess({required this.data});
+  VideoFetchSuccess({required this.data}) : super(data: data);
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [...data];
 }
 
 // data fetch error
 class VideoFetchError extends VideoState {
   final String errorMessage;
-  VideoFetchError({required this.errorMessage});
+  VideoFetchError({required this.errorMessage}) : super(data: []);
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [...data, errorMessage];
 }
 
-// data load more state
-class VideoLoadMoreSuccess extends VideoState {
+class LoadMoreVideosState extends VideoState {
+  final List data;
+
+  LoadMoreVideosState({required this.data}) : super(data: data);
+
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [...data];
 }
 
-// data load more success
-class VideoLoadMoreLoading extends VideoState {
+class VideoLoadMoreError extends VideoState {
+  final String errorMessage;
+  final List data;
+
+  VideoLoadMoreError({required this.errorMessage, required this.data})
+      : super(data: data);
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [...data, errorMessage];
 }
