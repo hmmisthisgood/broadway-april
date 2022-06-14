@@ -64,6 +64,13 @@ class _HomepageState extends State<Homepage> {
                 // textColor: Colors.red,
               );
             }
+
+            if (state is VideoLoadMoreError) {
+              Fluttertoast.showToast(
+                msg: state.errorMessage, toastLength: Toast.LENGTH_LONG,
+                // textColor: Colors.red,
+              );
+            }
           },
           builder: (context, state) {
             print(state);
@@ -86,7 +93,9 @@ class _HomepageState extends State<Homepage> {
             if (state is VideoFetchError) {
               return Text(state.errorMessage);
             }
-            if (state is VideoFetchSuccess || state is LoadMoreVideosState) {
+            if (state is VideoFetchSuccess ||
+                state is LoadMoreVideosState ||
+                state is VideoLoadMoreError) {
               return Column(
                 children: [
                   Expanded(

@@ -14,6 +14,8 @@ class VideoCubit extends Cubit<VideoState> {
     ///
     ///fetch video from the server
     emit(VideoLoading(loadingMessage: "Loading started....."));
+    // emit(VideoLoading(
+    //     loadingMessage: "Loading completed and date fetched....."));
 
     Dio api = Dio();
     allItems.clear();
@@ -28,9 +30,7 @@ class VideoCubit extends Cubit<VideoState> {
 
       final List hits = response.data["hits"];
       allItems = hits;
-      // emit(VideoFetchSuccess(data: hits));
-      emit(VideoLoading(
-          loadingMessage: "Loading completed and date fetched....."));
+      emit(VideoFetchSuccess(data: hits));
     } catch (e) {
       emit(VideoFetchError(errorMessage: e.toString()));
     }
@@ -58,11 +58,23 @@ class VideoCubit extends Cubit<VideoState> {
       allItems.addAll(hits);
       emit(VideoFetchSuccess(data: allItems));
       emit(VideoFetchSuccess(data: allItems));
-    } catch (e) {
+    } on DioError catch (e) {
+      print(e.message);
+      emit(VideoLoadMoreError(errorMessage: e.message, data: allItems));
+    } catch (e, s) {
+      print(e);
+      print(s);
       emit(VideoLoadMoreError(errorMessage: e.toString(), data: allItems));
     }
   }
 
+  refreshVideos() {
+    // emit a state for refrshing videos
+
+    // for ssucces state you can use : VideoFetchSuccess
+
+    /// for error state carete VideoRefreshErrorState
+  }
   videos() {
     // emit loading
     /// fetch from cache
