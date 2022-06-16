@@ -1,3 +1,6 @@
+import 'dart:ffi';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
@@ -20,7 +23,7 @@ class PhontosListView extends StatelessWidget {
       onEndOfPage: () {
         // print("I am at the edn");
 
-        BlocProvider.of<VideoCubit>(context).loadMoreVideos();
+        // BlocProvider.of<VideoCubit>(context).loadMoreVideos();
       },
       child: ListView.builder(
           itemCount: data.length,
@@ -41,9 +44,12 @@ class PhontosListView extends StatelessWidget {
                                 )));
                   },
                   child: Container(
-                    child: FadeInImage(
-                      placeholder: AssetImage(Assets.placeholder),
-                      image: NetworkImage(image['largeImageURL']),
+                    child: CachedNetworkImage(
+                      placeholder: (context, a) =>
+                          Image.asset(Assets.placeholder),
+                      imageUrl: image['previewURL'],
+                      fit: BoxFit.cover,
+                      width: double.infinity,
                     ),
                   ),
                 ),
@@ -62,8 +68,10 @@ class PhontosListView extends StatelessWidget {
                           border: Border.all(color: Colors.white, width: 2)),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(30),
-                        child: Image.network(
-                          image['userImageURL'],
+                        child: CachedNetworkImage(
+                          imageUrl: image['userImageURL'],
+                          placeholder: (context, a) =>
+                              Image.asset(Assets.placeholder),
                           height: 50,
                           width: 50,
                           fit: BoxFit.cover,

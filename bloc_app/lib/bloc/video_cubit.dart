@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:bloc_app/utils/constant.dart';
+import 'package:bloc_app/utils/sharedpref.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -10,6 +13,7 @@ class VideoCubit extends Cubit<VideoState> {
   List allItems = [];
 
   int currntPage = 1;
+
   fetchVideos() async {
     ///
     ///fetch video from the server
@@ -19,19 +23,43 @@ class VideoCubit extends Cubit<VideoState> {
 
     Dio api = Dio();
     allItems.clear();
+    final uri = Uri.parse(
+        "https://pixabay.com/api?key=${Constants.apiKey}&q=cars&image_type=photo");
+    final key = uri.toString();
+
+    final cache = await SharedPref.getRestApiData(key);
+
+    if (cache != null) {
+      final decodedCache = json.decode(cache);
+
+      final List _cachedHits = decodedCache["hits"];
+      // allItems = _cachedHits; // optional
+      emit(VideoFetchSuccess(data: _cachedHits));
+    }
+
     try {
+      // https://example.com/posts/
+      //  https://example.com/posts?type=photo/video
+
       final response = await api.get(Constants.apiUrl, queryParameters: {
         "key": Constants.apiKey,
         "q": "cars",
         "image_type": "photo",
-        "page": currntPage,
-        "per_page": 5,
+        "page": 1,
+        "per_page": 200,
       });
 
       final List hits = response.data["hits"];
       allItems = hits;
+
+      SharedPref.setRestApiData(key, json.encode(response.data));
+
       emit(VideoFetchSuccess(data: hits));
     } catch (e) {
+      print(e);
+      if (cache != null) {
+        return;
+      }
       emit(VideoFetchError(errorMessage: e.toString()));
     }
   }

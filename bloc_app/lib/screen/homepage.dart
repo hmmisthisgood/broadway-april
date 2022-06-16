@@ -73,7 +73,7 @@ class _HomepageState extends State<Homepage> {
             }
           },
           builder: (context, state) {
-            print(state);
+            // print(state);
             if (state is VideoInitState) {
               return CircularProgressIndicator();
             }
