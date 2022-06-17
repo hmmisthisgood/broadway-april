@@ -56,3 +56,21 @@ class VideoLoadMoreError extends VideoState {
   @override
   List<Object?> get props => [...data, errorMessage];
 }
+
+class VideoRefreshingState extends VideoState {
+  final List data;
+
+  VideoRefreshingState({required this.data}) : super(data: data);
+  @override
+  List<Object?> get props => [...data];
+}
+
+class VideoRefreshErrorState extends VideoState {
+  final String errorMessage;
+  final List data;
+
+  VideoRefreshErrorState({required this.errorMessage, required this.data})
+      : super(data: data);
+  @override
+  List<Object?> get props => [...data, errorMessage];
+}

@@ -11,24 +11,65 @@ import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
 import '../bloc/video_cubit.dart';
 import '../screen/stream_screen.dart';
 import '../utils/assets.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-class PhontosListView extends StatelessWidget {
-  const PhontosListView({Key? key, required this.data, required this.user})
+class PhontosListView extends StatefulWidget {
+  const PhontosListView(
+      {Key? key,
+      required this.data,
+      required this.user,
+      required this.refreshController})
       : super(key: key);
   final List data;
   final ValueNotifier<String> user;
+  final RefreshController refreshController;
+
+  @override
+  State<PhontosListView> createState() => _PhontosListViewState();
+}
+
+class _PhontosListViewState extends State<PhontosListView> {
+  late ScrollController scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+    scrollController = ScrollController();
+    scrollController.addListener(() {
+      final position = scrollController.position;
+      final offset = scrollController.offset;
+      // print(position.pixels);
+
+      final pixels = position.pixels;
+      if (pixels <= position.minScrollExtent && position.atEdge) {
+        print("I am at top");
+      }
+
+      print(position.maxScrollExtent);
+      final differenec = position.maxScrollExtent - pixels;
+
+      // if (differenec >= 200) {
+      //   BlocProvider.of<VideoCubit>(context).loadMoreVideos();
+      // }
+      if (pixels >= position.maxScrollExtent && position.atEdge) {
+        print("I am at end");
+        BlocProvider.of<VideoCubit>(context).loadMoreVideos();
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return LazyLoadScrollView(
-      onEndOfPage: () {
-        // print("I am at the edn");
-
-        // BlocProvider.of<VideoCubit>(context).loadMoreVideos();
+    return SmartRefresher(
+      controller: widget.refreshController,
+      onRefresh: () {
+        BlocProvider.of<VideoCubit>(context).refreshVideos();
       },
       child: ListView.builder(
-          itemCount: data.length,
+          controller: scrollController,
+          itemCount: widget.data.length,
           itemBuilder: (context, index) {
-            final image = data[index];
+            final image = widget.data[index];
 
             return Stack(
               children: [
@@ -59,7 +100,7 @@ class PhontosListView extends StatelessWidget {
                   child: InkWell(
                     onTap: () {
                       // userName = image["user"];
-                      user.value = image["user"];
+                      widget.user.value = image["user"];
                       // setState(() {});
                     },
                     child: Container(

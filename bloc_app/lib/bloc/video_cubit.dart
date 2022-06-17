@@ -46,7 +46,7 @@ class VideoCubit extends Cubit<VideoState> {
         "q": "cars",
         "image_type": "photo",
         "page": 1,
-        "per_page": 200,
+        "per_page": 5,
       });
 
       final List hits = response.data["hits"];
@@ -96,13 +96,36 @@ class VideoCubit extends Cubit<VideoState> {
     }
   }
 
-  refreshVideos() {
+  refreshVideos() async {
+    emit(VideoRefreshingState(data: allItems));
     // emit a state for refrshing videos
+    try {
+      // https://example.com/posts/
+      //  https://example.com/posts?type=photo/video
+      final uri = Uri.parse(
+          "https://pixabay.com/api?key=${Constants.apiKey}&q=cars&image_type=photo&per_page=5");
+      final key = uri.toString();
+
+      Dio api = Dio();
+      final response = await api.getUri(uri);
+
+      final List hits = response.data["hits"];
+      allItems = hits;
+
+      SharedPref.setRestApiData(key, json.encode(response.data));
+
+      emit(VideoFetchSuccess(data: hits));
+    } catch (e) {
+      print(e);
+
+      emit(VideoRefreshErrorState(errorMessage: e.toString(), data: allItems));
+    }
 
     // for ssucces state you can use : VideoFetchSuccess
 
     /// for error state carete VideoRefreshErrorState
   }
+
   videos() {
     // emit loading
     /// fetch from cache

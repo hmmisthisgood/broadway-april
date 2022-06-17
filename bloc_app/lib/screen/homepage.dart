@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../bloc/video_cubit.dart';
 
@@ -22,6 +23,7 @@ class _HomepageState extends State<Homepage> {
   String userName = "";
 
   ValueNotifier<String> user = ValueNotifier("");
+  final RefreshController refreshController = RefreshController();
 
   @override
   void initState() {
@@ -71,6 +73,17 @@ class _HomepageState extends State<Homepage> {
                 // textColor: Colors.red,
               );
             }
+
+            if (state is VideoRefreshingState) {
+              refreshController.requestRefresh();
+            }
+            if (state is VideoRefreshErrorState) {
+              refreshController.requestRefresh();
+            }
+
+            if (state is VideoFetchSuccess) {
+              refreshController.refreshCompleted();
+            }
           },
           builder: (context, state) {
             // print(state);
@@ -95,11 +108,17 @@ class _HomepageState extends State<Homepage> {
             }
             if (state is VideoFetchSuccess ||
                 state is LoadMoreVideosState ||
-                state is VideoLoadMoreError) {
+                state is VideoLoadMoreError ||
+                state is VideoRefreshingState ||
+                state is VideoRefreshErrorState) {
               return Column(
                 children: [
                   Expanded(
-                      child: PhontosListView(data: state.data, user: user)),
+                      child: PhontosListView(
+                    data: state.data,
+                    user: user,
+                    refreshController: refreshController,
+                  )),
                   if (state is LoadMoreVideosState) CircularProgressIndicator()
                 ],
               );
