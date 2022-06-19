@@ -78,7 +78,7 @@ class _HomepageState extends State<Homepage> {
               refreshController.requestRefresh();
             }
             if (state is VideoRefreshErrorState) {
-              refreshController.requestRefresh();
+              refreshController.refreshFailed();
             }
 
             if (state is VideoFetchSuccess) {

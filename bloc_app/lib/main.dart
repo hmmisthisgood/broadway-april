@@ -1,4 +1,5 @@
 import 'package:bloc_app/bloc/video_cubit.dart';
+import 'package:bloc_app/utils/theme.dart';
 import 'package:bloc_app/widget/inherited_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,10 +22,13 @@ class MyApp extends StatelessWidget {
       child: BlocProvider(
           create: (_) => VideoCubit(),
           child: MaterialApp(
-            home: Homepage(
-              envMode: "dev",
-            ),
-            theme: ThemeData(primarySwatch: Colors.pink),
+            home: Homepage(envMode: "dev"),
+            theme: CustomTheme.lighTheme,
+            darkTheme: CustomTheme.darkTheme,
+            themeMode: ThemeMode.dark,
+            //  ThemeData(
+            //     primarySwatch: Colors.pink,
+            //     scaffoldBackgroundColor: Colors.white),
           )),
     );
   }

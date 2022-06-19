@@ -29,18 +29,21 @@ class PhontosListView extends StatefulWidget {
 }
 
 class _PhontosListViewState extends State<PhontosListView> {
-  late ScrollController scrollController;
+  ScrollController scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
-    scrollController = ScrollController();
+    scrollController.addListener(() {});
+
     scrollController.addListener(() {
       final position = scrollController.position;
+
       final offset = scrollController.offset;
       // print(position.pixels);
 
       final pixels = position.pixels;
+
       if (pixels <= position.minScrollExtent && position.atEdge) {
         print("I am at top");
       }
@@ -51,6 +54,7 @@ class _PhontosListViewState extends State<PhontosListView> {
       // if (differenec >= 200) {
       //   BlocProvider.of<VideoCubit>(context).loadMoreVideos();
       // }
+
       if (pixels >= position.maxScrollExtent && position.atEdge) {
         print("I am at end");
         BlocProvider.of<VideoCubit>(context).loadMoreVideos();
@@ -60,70 +64,79 @@ class _PhontosListViewState extends State<PhontosListView> {
 
   @override
   Widget build(BuildContext context) {
-    return SmartRefresher(
-      controller: widget.refreshController,
-      onRefresh: () {
-        BlocProvider.of<VideoCubit>(context).refreshVideos();
-      },
-      child: ListView.builder(
-          controller: scrollController,
-          itemCount: widget.data.length,
-          itemBuilder: (context, index) {
-            final image = widget.data[index];
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: SmartRefresher(
+        controller: widget.refreshController,
+        onRefresh: () {
+          BlocProvider.of<VideoCubit>(context).refreshVideos();
+        },
+        child: ListView.builder(
+            controller: scrollController,
+            itemCount: widget.data.length,
+            itemBuilder: (context, index) {
+              final image = widget.data[index];
 
-            return Stack(
-              children: [
-                InkWell(
-                  onTap: () {
-                    // Navigator.c(context).push(route);
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  child: Stack(
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          // Navigator.c(context).push(route);
 
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (_) => StreamScreen(
-                                  envMode: "",
-                                )));
-                  },
-                  child: Container(
-                    child: CachedNetworkImage(
-                      placeholder: (context, a) =>
-                          Image.asset(Assets.placeholder),
-                      imageUrl: image['previewURL'],
-                      fit: BoxFit.cover,
-                      width: double.infinity,
-                    ),
-                  ),
-                ),
-                Positioned(
-                  bottom: 20,
-                  right: 20,
-                  child: InkWell(
-                    onTap: () {
-                      // userName = image["user"];
-                      widget.user.value = image["user"];
-                      // setState(() {});
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(color: Colors.white, width: 2)),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(30),
-                        child: CachedNetworkImage(
-                          imageUrl: image['userImageURL'],
-                          placeholder: (context, a) =>
-                              Image.asset(Assets.placeholder),
-                          height: 50,
-                          width: 50,
-                          fit: BoxFit.cover,
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) => StreamScreen(
+                                        envMode: "",
+                                      )));
+                        },
+                        child: Container(
+                          child: CachedNetworkImage(
+                            placeholder: (context, a) =>
+                                Image.asset(Assets.placeholder),
+                            imageUrl: image['previewURL'],
+                            fit: BoxFit.cover,
+                            width: double.infinity,
+                          ),
                         ),
                       ),
-                    ),
+                      Positioned(
+                        bottom: 20,
+                        right: 20,
+                        child: InkWell(
+                          onTap: () {
+                            // userName = image["user"];
+                            widget.user.value = image["user"];
+                            // setState(() {});
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border:
+                                    Border.all(color: Colors.white, width: 2)),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(30),
+                              child: CachedNetworkImage(
+                                imageUrl: image['userImageURL'],
+                                placeholder: (context, a) =>
+                                    Image.asset(Assets.placeholder),
+                                height: 50,
+                                width: 50,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
                   ),
-                )
-              ],
-            );
-          }),
+                ),
+              );
+            }),
+      ),
     );
   }
 }
