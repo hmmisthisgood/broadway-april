@@ -1,3 +1,4 @@
+import 'package:animation/screen/hero1_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'screen/homepage.dart';
@@ -12,7 +13,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Homepage(),
+      home: Hero1(),
     );
   }
 }
