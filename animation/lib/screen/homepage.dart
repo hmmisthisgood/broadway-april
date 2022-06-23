@@ -9,7 +9,9 @@ class Homepage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title:Text("Lottie animation")
+      ),
       body: Column(children: [
         Lottie.asset("assets/animation/apple_animation.json"),
         Image.asset("assets/animation/applecut.gif")

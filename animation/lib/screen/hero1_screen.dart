@@ -1,4 +1,5 @@
 import 'package:animation/screen/hero2_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
@@ -8,9 +9,13 @@ class Hero1 extends StatelessWidget {
 
   final image =
       "https://cdn.pixabay.com/photo/2022/06/12/20/18/flower-7258778_1280.jpg";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+       appBar: AppBar(
+        title:Text("Hero animation")
+      ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.max,
@@ -18,7 +23,7 @@ class Hero1 extends StatelessWidget {
           InkWell(
             onTap: () {
               Navigator.push(
-                  context, MaterialPageRoute(builder: (_) => Hero2()));
+                  context, CupertinoPageRoute(builder: (_) => Hero2()));
             },
             child: Hero(
               tag: "image-tag",
