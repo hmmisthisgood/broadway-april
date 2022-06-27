@@ -1,4 +1,6 @@
 import 'package:animation/navigation/custom_route.dart';
+import 'package:animation/screen/custom_paint_screen.dart';
+import 'package:animation/screen/custom_painter_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import "hero1_screen.dart";
@@ -11,7 +13,9 @@ class NavigationScreen extends StatelessWidget {
   final List<Map> pages = [
     {"name": "animated container", 'targetWidget': AnimContainerScreen()},
     {"name": "Hero screen", 'targetWidget': Hero1()},
-    {"name": "Lottie", 'targetWidget': Homepage()}
+    {"name": "Lottie", 'targetWidget': Homepage()},
+    {"name": "Clipper", 'targetWidget': CustomClipperScreen()},
+    {"name": "Custom Painter", 'targetWidget': CustomPainterScreen()}
   ];
   @override
   Widget build(BuildContext context) {
