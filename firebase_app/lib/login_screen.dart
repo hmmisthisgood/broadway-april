@@ -4,7 +4,6 @@ import 'package:firebase_app/register_screen.dart';
 import 'package:firebase_app/widget/full_screen_loading.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'widget/common_text_field.dart';
@@ -63,22 +62,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
     context.read<AuthCubit>().emailSignIn(
         email: emailController.text, password: passwordController.text);
-  }
-
-  facebookLogin() async {
-    final LoginResult result =
-        await FacebookAuth.instance.login(loginBehavior: LoginBehavior.webOnly);
-    if (result.status == LoginStatus.success) {
-      final AccessToken accessToken = result.accessToken!;
-
-      final OAuthCredential facebookAuthCredential =
-          FacebookAuthProvider.credential(result.accessToken!.token);
-
-      return FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
-    } else {
-      print(result.status);
-      print(result.message);
-    }
   }
 
   @override
@@ -220,7 +203,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         SizedBox(height: 12),
                         MaterialButton(
-                          onPressed: facebookLogin,
+                          onPressed: () {
+                            context.read<AuthCubit>().loginWithFacebook();
+                          },
                           color: Colors.blue,
                           minWidth: double.infinity,
                           height: 48,
@@ -265,6 +250,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ValueListenableBuilder<bool>(
               valueListenable: isLoginLoading,
               // child: FullScreenLoading(),
+
               builder: (context, value, child) {
                 if (value == true) return FullScreenLoading();
                 return Container();

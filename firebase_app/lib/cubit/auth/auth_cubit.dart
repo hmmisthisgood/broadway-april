@@ -12,6 +12,7 @@ class AuthCubit extends Cubit<AuthState> {
 
     auth.currentUser;
     emit(AuthLoading(loadingMessage: "Signing you In...."));
+
     try {
       await auth.signOut();
       final cred = await auth.signInWithEmailAndPassword(
@@ -70,5 +71,13 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  logout() {}
+  updateUser() {
+    final auth = FirebaseAuth.instance;
+    auth.currentUser!.sendEmailVerification();
+    auth.currentUser!.updateDisplayName("I am the rock");
+  }
+
+  logout() {
+    FirebaseAuth.instance.signOut();
+  }
 }

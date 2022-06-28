@@ -49,6 +49,7 @@ class _StreamScreenState extends State<StreamScreen> {
   Widget build(BuildContext context) {
     final appEnv = AppEnv.of(context);
     final theme = Theme.of(context);
+    final h1 = theme.textTheme.headline1;
 
     print(appEnv.envMode);
     return Scaffold(
@@ -59,7 +60,10 @@ class _StreamScreenState extends State<StreamScreen> {
             print(snapshot.connectionState.toString());
             if (snapshot.connectionState == ConnectionState.active) {
               final _data = snapshot.data;
-              return Text(_data.toString());
+              return Text(
+                _data.toString(),
+                style: h1!.copyWith(color: Colors.pink),
+              );
             }
             if (snapshot.connectionState == ConnectionState.waiting) {
               return CircularProgressIndicator();
