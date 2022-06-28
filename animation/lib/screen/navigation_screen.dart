@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import "hero1_screen.dart";
 import "anim_container.dart";
 import "homepage.dart";
+import 'transform_screen.dart';
 
 class NavigationScreen extends StatelessWidget {
   NavigationScreen({Key? key}) : super(key: key);
@@ -15,7 +16,8 @@ class NavigationScreen extends StatelessWidget {
     {"name": "Hero screen", 'targetWidget': Hero1()},
     {"name": "Lottie", 'targetWidget': Homepage()},
     {"name": "Clipper", 'targetWidget': CustomClipperScreen()},
-    {"name": "Custom Painter", 'targetWidget': CustomPainterScreen()}
+    {"name": "Custom Painter", 'targetWidget': CustomPainterScreen()},
+    {"name": "Transform SCreen", 'targetWidget': TransformScreen()}
   ];
   @override
   Widget build(BuildContext context) {
