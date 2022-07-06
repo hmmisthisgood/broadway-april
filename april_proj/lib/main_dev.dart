@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 import 'app/app_dev.dart';
@@ -15,7 +16,8 @@ void main() async {
   await EasyLocalization.ensureInitialized();
 
   /// use run zoned to catch all uncaught exceptions
-  runZonedGuarded(() {
+  runZonedGuarded(() async {
+    await Firebase.initializeApp();
     runApp(
       DevicePreview(
         builder: (context) =>

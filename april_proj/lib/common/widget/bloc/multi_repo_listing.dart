@@ -4,13 +4,12 @@ import 'package:boilerplate/common/constant/env.dart';
 import 'package:boilerplate/common/http/api_provider.dart';
 import 'package:boilerplate/feature/authentication/resource/user_repository.dart';
 
-import 'internet_check.dart';
+import '../../util/internet_check.dart';
 
-class MultiBlocAndRepositoryProvider extends StatelessWidget {
+class MultiRepoListing extends StatelessWidget {
   final Widget child;
   final Env env;
-  const MultiBlocAndRepositoryProvider(
-      {required this.child, required this.env});
+  const MultiRepoListing({required this.child, required this.env});
   @override
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(

@@ -1,7 +1,7 @@
 name: boilerplate
 description: A new Flutter project.
 
-version: 0.0.1+1 
+version: 0.0.1+1
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
@@ -21,29 +21,27 @@ dependencies:
   flutter_cache_manager: ^3.0.1
   shimmer: ^2.0.0
   introduction_screen: ^3.0.2
+  fluttertoast: ^8.0.9
 
   # othe utils
   equatable: ^2.0.0
   device_preview:
+  form_field_validator: ^1.1.0
 
   # state management
-  bloc: ^7.0.0
-  flutter_bloc: ^7.0.0
-  logger: 
+  flutter_bloc: 8.0.1
+  logger:
 
   # network
   dio: ^4.0.0
   http: ^0.13.3
   connectivity: ^3.0.4
 
-
   # nottifications and firebase
-  # firebase_core: ^1.1.1
-  # firebase_messaging: ^10.0.0
-  # flutter_local_notifications: ^5.0.0+4
-  # flutter_facebook_auth: ^3.3.3+1
-  # google_sign_in: ^5.0.2
-
+  firebase_core: ^1.19.1
+  # flutter_facebook_auth: ^4.3.4+2
+  google_sign_in: ^5.3.3
+  firebase_auth: 3.4.1
   # data persistence
   shared_preferences: ^2.0.5
 

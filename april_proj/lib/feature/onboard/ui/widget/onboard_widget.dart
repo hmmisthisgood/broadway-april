@@ -1,8 +1,9 @@
 import 'package:boilerplate/common/constant/assets.dart';
 import 'package:boilerplate/common/constant/strings.dart';
 import 'package:flutter/material.dart';
-import 'package:boilerplate/common/widget/others/page_wrapper.dart';
 import 'package:introduction_screen/introduction_screen.dart';
+
+import '../../../../common/route/routes.dart';
 
 class OnboardWidget extends StatelessWidget {
   final pages = [
@@ -35,7 +36,9 @@ class OnboardWidget extends StatelessWidget {
             style: TextStyle(fontWeight: FontWeight.w600)),
         done: const Text("Done", style: TextStyle(fontWeight: FontWeight.w600)),
         next: const Text("Next", style: TextStyle(fontWeight: FontWeight.w600)),
-        onDone: () {},
+        onDone: () {
+          Navigator.pushNamed(context, Routes.login);
+        },
       ),
     );
   }
