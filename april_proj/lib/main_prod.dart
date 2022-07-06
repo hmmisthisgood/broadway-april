@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 import 'app/app_prod.dart';
@@ -12,7 +13,9 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
 
-  runZonedGuarded(() {
+  runZonedGuarded(() async {
+    await Firebase.initializeApp();
+
     runApp(
       LocalWrapper(child: App(env: EnvValue.production)),
     );

@@ -10,6 +10,7 @@ class Strings {
   static const ob3Des = "Our app is super friendly and kind. Welcome here!";
 
 // validation messages
+  static const emailMustBeValid = "email must be valid";
 
   static const passwordMustBeValid = "Password must be valid";
   static const passwordLegthValid = "Password must be 8 characters long";
