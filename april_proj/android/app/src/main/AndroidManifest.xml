@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.boilerplate">
    <application
-        android:label="galaxy4k"
+        android:label="our app"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
