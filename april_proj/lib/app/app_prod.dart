@@ -1,3 +1,4 @@
+import 'package:boilerplate/app/notification_wrapper.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:boilerplate/app/theme.dart';
@@ -26,23 +27,25 @@ class _AppState extends State<App> {
     return MultiRepoListing(
       env: widget.env,
       child: MultiBlocListing(
-        child: UpdateWrapper(
-            child: MaterialApp(
-          locale: context.locale,
-          navigatorKey: Nav.navKey,
-          builder: (context, Widget? widget) {
-            setErrorBuilder(context);
-            return widget!;
-          },
-          supportedLocales: context.supportedLocales,
-          localizationsDelegates: context.localizationDelegates,
-          debugShowCheckedModeBanner: false,
-          darkTheme: CustomTheme.darkTheme,
-          theme: CustomTheme.lightTheme,
-          title: Strings.APP_TITLE,
-          initialRoute: Routes.root,
-          onGenerateRoute: RouteGenerator.generateRoute,
-        )),
+        child: NotificationWrapper(
+          child: UpdateWrapper(
+              child: MaterialApp(
+            locale: context.locale,
+            navigatorKey: Nav.navKey,
+            builder: (context, Widget? widget) {
+              setErrorBuilder(context);
+              return widget!;
+            },
+            supportedLocales: context.supportedLocales,
+            localizationsDelegates: context.localizationDelegates,
+            debugShowCheckedModeBanner: false,
+            darkTheme: CustomTheme.darkTheme,
+            theme: CustomTheme.lightTheme,
+            title: Strings.APP_TITLE,
+            initialRoute: Routes.root,
+            onGenerateRoute: RouteGenerator.generateRoute,
+          )),
+        ),
       ),
     );
   }

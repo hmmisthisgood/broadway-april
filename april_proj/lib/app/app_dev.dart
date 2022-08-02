@@ -11,6 +11,7 @@ import 'package:device_preview/device_preview.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../common/widget/bloc/multi_bloc_listing.dart';
 import '../common/widget/bloc/multi_repo_listing.dart';
+import 'notification_wrapper.dart';
 import 'update_wrapper.dart';
 
 class App extends StatefulWidget {
@@ -27,20 +28,22 @@ class _AppState extends State<App> {
     return MultiRepoListing(
       env: widget.env,
       child: MultiBlocListing(
-        child: UpdateWrapper(
-            child: MaterialApp(
-          locale: context.locale,
-          navigatorKey: Nav.navKey,
-          builder: DevicePreview.appBuilder,
-          supportedLocales: context.supportedLocales,
-          localizationsDelegates: context.localizationDelegates,
-          debugShowCheckedModeBanner: false,
-          darkTheme: CustomTheme.darkTheme,
-          theme: CustomTheme.lightTheme,
-          title: Strings.APP_TITLE,
-          initialRoute: Routes.root,
-          onGenerateRoute: RouteGenerator.generateRoute,
-        )),
+        child: NotificationWrapper(
+          child: UpdateWrapper(
+              child: MaterialApp(
+            locale: context.locale,
+            navigatorKey: Nav.navKey,
+            builder: DevicePreview.appBuilder,
+            supportedLocales: context.supportedLocales,
+            localizationsDelegates: context.localizationDelegates,
+            debugShowCheckedModeBanner: false,
+            darkTheme: CustomTheme.darkTheme,
+            theme: CustomTheme.lightTheme,
+            title: Strings.APP_TITLE,
+            initialRoute: Routes.root,
+            onGenerateRoute: RouteGenerator.generateRoute,
+          )),
+        ),
       ),
     );
   }
